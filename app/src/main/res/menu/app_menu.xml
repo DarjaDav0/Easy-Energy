@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/mainFragment"
+        android:title="Home"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/infoFragment"
-        android:title="Info" />
+        android:title="Info"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/settingsFragment"
-        android:title="Settings" />
+        android:title="Settings"
+        app:showAsAction="never"/>
 </menu>

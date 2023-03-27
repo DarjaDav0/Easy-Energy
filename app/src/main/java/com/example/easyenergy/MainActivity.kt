@@ -22,7 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.appBarMain.toolBar)
+
+        //TODO: näissä vielä jotain vikaa, navigointi ei atm vielä toimi miten pitäisi
+
+       //setSupportActionBar(binding.appBarMain.toolBar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

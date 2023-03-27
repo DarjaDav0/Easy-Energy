@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.easyenergy.fragments.MainFragment"
-        android:label="fragment_main"
+        android:label="Home"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.example.easyenergy.fragments.InfoFragment"
-        android:label="fragment_info"
+        android:label="Info"
         tools:layout="@layout/fragment_info">
         <action
             android:id="@+id/action_infoFragment_pop_including_mainFragment"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.easyenergy.fragments.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_pop_including_mainFragment"

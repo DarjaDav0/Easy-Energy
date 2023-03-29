@@ -20,14 +20,14 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        val root: View = binding.root
 
-        return root
+
+        return binding.root
     }
     override fun onDestroyView() {
         super.onDestroyView()

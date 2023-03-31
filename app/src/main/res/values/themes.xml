@@ -16,6 +16,7 @@
     <style name="Theme.EasyEnergy.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/no_color</item>
     </style>
 
     <style name="Theme.EasyEnergy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -26,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
        setSupportActionBar(binding.appBarMain.toolBar)
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
+
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.mainFragment, R.id.infoFragment, R.id.settingsFragment), drawerLayout)
+            R.id.mainFragment, R.id.infoFragment, R.id.settingsFragment))
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -40,17 +41,39 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
-        menuInflater.inflate(R.menu.app_menu, menu)
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.app_menu, menu)
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return onOptionsItemSelected(item)
+
+        val navController = this.findNavController(R.id.nav_host_fragment_content_main)
+        return when (item.itemId)
+        {
+            R.id.mainFragment -> {
+                navController.navigate(R.id.mainFragment)
+                true
+            }
+            R.id.infoFragment -> {
+                navController.navigate(R.id.infoFragment)
+                true
+            }
+            R.id.settingsFragment -> {
+                navController.navigate(R.id.settingsFragment)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+
 
     }
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
 }

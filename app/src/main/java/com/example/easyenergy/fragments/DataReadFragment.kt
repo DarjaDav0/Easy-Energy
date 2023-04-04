@@ -6,61 +6,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.easyenergy.databinding.FragmentMainBinding
+import com.example.easyenergy.databinding.FragmentDataReadBinding
 
-class MainFragment : Fragment() {
+class DataReadFragment : Fragment() {
+    private var _binding: FragmentDataReadBinding? = null
 
-    private var _binding: FragmentMainBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var viewModel: MainViewModel
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+    ): View? {
+        _binding = FragmentDataReadBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-
-        //käyttää ensin viewmodelissa sijaitsevaa funktiota jonka jälkeen asettaa kuvaajaan viewmodelin muuttujan kautta
-        viewModel.createDayChart()
-        binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
-
-        binding.dayButton.setOnClickListener()
-        {
-            viewModel.createDayChart()
-            binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
-        }
-
-        binding.weekButton.setOnClickListener()
-        {
-            viewModel.createWeekChart()
-            binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
-        }
-
-        binding.monthButton.setOnClickListener()
-        {
-            viewModel.createMonthChart()
-            binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
-        }
-
-        return binding.root
+        // the binding -object allows you to access views in the layout, textviews etc.
+        binding.textView.text
+        return root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
     fun getElectrictyData() {
         val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices"
 
@@ -94,5 +70,5 @@ class MainFragment : Fragment() {
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)
     }
-
 }
+

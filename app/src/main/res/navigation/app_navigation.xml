@@ -30,4 +30,9 @@
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/dataReadFragment"
+        android:name="com.example.easyenergy.fragments.DataReadFragment"
+        android:label="fragment_data_read"
+        tools:layout="@layout/fragment_data_read" />
 </navigation>

@@ -21,21 +21,21 @@
             android:id="@+id/day_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Day"
+            android:text="@string/today_btn"
             android:textColor="#000000" />
 
         <Button
             android:id="@+id/week_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Week"
+            android:text="@string/month_btn"
             android:textColor="#000000" />
 
         <Button
             android:id="@+id/month_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Month"
+            android:text="@string/year_btn"
             android:textColor="#000000" />
     </LinearLayout>
 

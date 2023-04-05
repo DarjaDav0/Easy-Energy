@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Easy Energy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hei tyhjä fragmentti</string>
+    <string name="today_btn">Tänään</string>
+    <string name="month_btn">Kuukausi</string>
+    <string name="year_btn">Vuosi</string>
+    <string name="home_menu">Kotisivu</string>
+    <string name="info_menu">Info</string>
+    <string name="settings_menu">Asetukset</string>
+</resources>

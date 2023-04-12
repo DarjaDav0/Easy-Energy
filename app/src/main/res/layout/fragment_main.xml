@@ -63,4 +63,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TEST" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/day_price_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

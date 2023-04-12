@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -15,14 +16,16 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class MainViewModel : ViewModel(){
     private val hoursList = mutableListOf<Double>()
-    private var allDataList = mutableListOf<ElectricityPrice>()
+    var allDataList = mutableListOf<ElectricityPrice>()
+    var dayDataList = mutableListOf<ElectricityPrice>()
     private lateinit var testChart : AAChartModel
     val getChart get() = testChart
     var chosenYear: String = "2022"
-
+    val currentTime = Date()
 
 
     fun createDayChart()
@@ -137,4 +140,44 @@ class MainViewModel : ViewModel(){
             requestQueue.add(stringRequest)
         }
     }
+
+    fun getDayData(context: Context) {
+        viewModelScope.launch {
+            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/${currentTime}"
+
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            // Request a string response from the provided URL.
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.GET, JSON_URL,
+                Response.Listener { response ->
+                    var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+
+                    // Store the list of ElectricityPrice objects in allDataList
+                    dayDataList = result.toMutableList()
+
+                    Log.d("ADVTECH", dayDataList.toString())
+
+                },
+                Response.ErrorListener {
+                    // typically this is a connection error
+                    Log.d("ADVTECH", it.toString())
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+
+                    // basic headers for the data
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    headers["Content-Type"] = "application/json; charset=utf-8"
+                    return headers
+                }
+            }
+
+            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
+            // if using this in an activity, use "this" instead of "context"
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(stringRequest)
+        }
+    }
+
 }

@@ -12,21 +12,24 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.easyenergy.ElectricityPriceAdapter
 import com.example.easyenergy.databinding.FragmentMainBinding
+import com.example.easyenergy.datatypes.ElectricityPrice
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
-
-
+    //private val recyclerView = binding.dayPriceList
+    //private val adapter = ElectricityPriceAdapter(viewModel.dayDataList)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -57,10 +60,11 @@ class MainFragment : Fragment() {
         {
             viewModel.getAllData(this.requireContext())
         }
-
-
+        //recyclerView.adapter = adapter
         return binding.root
     }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

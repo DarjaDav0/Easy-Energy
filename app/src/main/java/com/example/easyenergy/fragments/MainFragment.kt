@@ -38,6 +38,9 @@ class MainFragment : Fragment() {
         viewModel.createDayChart()
         binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
 
+        //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
+        binding.currentHourPriceText.text = viewModel.currentHourPrice
+
         binding.dayButton.setOnClickListener()
         {
             viewModel.createDayChart()
@@ -60,6 +63,8 @@ class MainFragment : Fragment() {
         {
             viewModel.getAllData(this.requireContext())
         }
+
+
         //recyclerView.adapter = adapter
         return binding.root
     }

@@ -26,6 +26,9 @@ class MainViewModel : ViewModel(){
     val getChart get() = testChart
     var chosenYear: String = "2022"
     val currentTime = Date()
+    private var _currentHourPrice: String= "test price 123"
+    val currentHourPrice get() = _currentHourPrice
+
 
 
     fun createDayChart()
@@ -141,6 +144,7 @@ class MainViewModel : ViewModel(){
         }
     }
 
+    //TODO: viewmodelin muuttuja _currentHourPrice muuttaa nykyisen tunnin hinnan mukaiseksi ja lisätä sen stringin perään c/kwh (ei atm erillistä tekstikentää sille kun voi laittaa tätäkin kautta)
     fun getDayData(context: Context) {
         viewModelScope.launch {
             val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/${currentTime}"

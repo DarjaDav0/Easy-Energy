@@ -8,4 +8,5 @@
     <string name="home_menu">Kotisivu</string>
     <string name="info_menu">Info</string>
     <string name="settings_menu">Asetukset</string>
+    <string name="current_price_text">Nykyinen hinta</string>
 </resources>

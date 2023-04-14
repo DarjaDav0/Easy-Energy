@@ -29,6 +29,9 @@ class MainViewModel : ViewModel(){
     private var _currentHourPrice: String= "test price 123"
     val currentHourPrice get() = _currentHourPrice
 
+    private var _yearArray = mutableListOf<String>()
+    val yearArray get() = _yearArray
+
 
 
     fun createDayChart()
@@ -113,9 +116,22 @@ class MainViewModel : ViewModel(){
                     for (item: ElectricityPrice in result)
                     {
                         val timeValSub = item.Time?.substring(0,4)
+
+
                         if (timeValSub == chosenYear)
                         {
                             allDataList.add(item)
+                        }
+
+                        //lisää vuosi arrayhyn vuoden jos sitä ei ole jo listassa, tällä tavalla välttyi duplikaateilta
+                        //TODO: muokata vuoden lisäys oman tietokannan datan mukaan
+                        if (yearArray.contains(timeValSub))
+                        {
+                            true
+                        }
+                        else
+                        {
+                            yearArray.add(timeValSub!!)
                         }
 
                     }

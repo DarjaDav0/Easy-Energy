@@ -10,6 +10,7 @@
     tools:showIn="@layout/app_bar_main">
 
 
+
     <LinearLayout
         android:id="@+id/current_time_layout"
         android:layout_width="200dp"
@@ -65,6 +66,12 @@
             android:layout_height="wrap_content"
             android:text="@string/year_btn" />
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

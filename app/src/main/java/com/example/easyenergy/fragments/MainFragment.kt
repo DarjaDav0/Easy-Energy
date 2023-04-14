@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
@@ -40,6 +43,11 @@ class MainFragment : Fragment() {
 
         //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
         binding.currentHourPriceText.text = viewModel.currentHourPrice
+
+        //luo spinnerin viewin main fragmentin xml:ssä
+        val spinner = binding.spinnerDropdown
+        val spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, viewModel.yearArray)
+        spinner.adapter = spinnerAdapter
 
         binding.dayButton.setOnClickListener()
         {

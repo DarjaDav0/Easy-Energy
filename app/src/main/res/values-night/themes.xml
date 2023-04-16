@@ -8,9 +8,9 @@
         <item name="colorPrimaryVariant">@color/grey</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/amber</item>
+        <item name="colorSecondaryVariant">@color/amber</item>
+        <item name="colorOnSecondary">@color/amber</item>
         <!-- Status bar color. -->
 
         <!-- Customize your theme here. -->
@@ -18,11 +18,12 @@
         <item name="android:navigationBarColor">@color/dark_grey</item>
         <item name="android:textColor">@color/amber</item>
         <item name="android:background">@color/grey</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
 
     </style>
 
     <style name="ButtonEE">
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/amber</item>
     </style>
     <style name="Theme.EasyEnergy.NoActionBar">

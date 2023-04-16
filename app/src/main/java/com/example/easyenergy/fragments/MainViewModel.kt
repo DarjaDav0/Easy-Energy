@@ -11,9 +11,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.easyenergy.datatypes.ElectricityPrice
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aachartcreator.*
+import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -46,10 +45,13 @@ class MainViewModel : ViewModel(){
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
             .title("Hintaseuranta")
-            .backgroundColor("#4b2b7f")
+            .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
+            .axesTextColor("#494949")
+            .backgroundColor("#f9bf05")
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
+                    .color("#494949")
                     .name("c/kwh")
                     .data(hoursList.toTypedArray())
             )
@@ -68,10 +70,13 @@ class MainViewModel : ViewModel(){
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
             .title("Hintaseuranta")
-            .backgroundColor("#4b2b7f")
+            .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
+            .axesTextColor("#494949")
+            .backgroundColor("#f9bf05")
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
+                    .color("#494949")
                     .name("c/kwh")
                     .data(hoursList.toTypedArray())
             )
@@ -91,10 +96,14 @@ class MainViewModel : ViewModel(){
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
             .title("Hintaseuranta")
-            .backgroundColor("#4b2b7f")
+            .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
+            .axesTextColor("#494949")
+            .backgroundColor("#f9bf05")
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
+                    .
+                    .color("#494949")
                     .name("c/kwh")
                     .data(hoursList.toTypedArray())
             )

@@ -102,7 +102,6 @@ class MainViewModel : ViewModel(){
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
-                    .
                     .color("#494949")
                     .name("c/kwh")
                     .data(hoursList.toTypedArray())

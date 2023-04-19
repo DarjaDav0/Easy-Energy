@@ -33,7 +33,7 @@ class MainViewModel : ViewModel(){
     var chosenYear: String = "2022"
     val timeFormat = ""
     var currentTime = ""
-    private var _currentHourPrice: String= "test price 123"
+    private var _currentHourPrice: String= ""
     val currentHourPrice get() = _currentHourPrice
 
     private var _yearArray = mutableListOf<String>()
@@ -193,6 +193,7 @@ class MainViewModel : ViewModel(){
     //TODO: viewmodelin muuttuja _currentHourPrice muuttaa nykyisen tunnin hinnan mukaiseksi ja lisätä sen stringin perään c/kwh (ei atm erillistä tekstikentää sille kun voi laittaa tätäkin kautta)
     fun getDayData(context: Context) {
         viewModelScope.launch {
+            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
             currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             //periaatteessa toimii kun vaihtaa 2023-03-21 kohdan currenttimeen
             //mutta backendillä oli itsellään ongelmia hakea viime aikaista dataa byday
@@ -206,17 +207,63 @@ class MainViewModel : ViewModel(){
                     var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
 
                     val formatter = DecimalFormat("0.0")
+
                     for (item in result)
                     {
                         val time = item.Time?.substring(12,13)
-                        val price = formatter.format(item.value)
-                        dayDataList.add(price.toDouble())
+                        val price = formatter.format(item.value).toDouble()
+                        dayDataList.add(price)
                         hoursList.add(time!!.toDouble())
                         Log.d("item", price.toString())
                     }
                     // Store the list of ElectricityPrice objects in allDataList
 
                     Log.d("ADVTECH", dayDataList.toString())
+
+                },
+                Response.ErrorListener {
+                    // typically this is a connection error
+                    Log.d("ADVTECH", it.toString())
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+
+                    // basic headers for the data
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    headers["Content-Type"] = "application/json; charset=utf-8"
+                    return headers
+                }
+            }
+
+            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
+            // if using this in an activity, use "this" instead of "context"
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(stringRequest)
+        }
+    }
+
+    fun getThisHourData(context: Context) {
+        viewModelScope.launch {
+            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
+
+            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/2023-03-21T${currentHour}:00:00Z"
+
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            // Request a string response from the provided URL.
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.GET, JSON_URL,
+                Response.Listener { response ->
+                    var result: List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+
+                    val formatter = DecimalFormat("0.0")
+                    val thisHourItem = result[currentHour]
+                    val formatted = formatter.format(thisHourItem.value)
+                    _currentHourPrice = "$formatted c/kwh"
+                    Log.d("ThisHour", thisHourItem.value.toString())
+
+
 
                 },
                 Response.ErrorListener {

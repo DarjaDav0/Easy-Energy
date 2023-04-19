@@ -36,13 +36,13 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        viewModel.getThisHourData(this.requireContext())
 
-        //käyttää ensin viewmodelissa sijaitsevaa funktiota jonka jälkeen asettaa kuvaajaan viewmodelin muuttujan kautta
-        viewModel.createDayChart()
-        binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
 
-        //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
-        binding.currentHourPriceText.text = viewModel.currentHourPrice
+
+
+        createCharts()
+
 
 
         //daily
@@ -81,10 +81,21 @@ class MainFragment : Fragment() {
 
 
 
+
         //recyclerView.adapter = adapter
         return binding.root
     }
 
+    fun createCharts()
+    {
+        //käyttää ensin viewmodelissa sijaitsevaa funktiota jonka jälkeen asettaa kuvaajaan viewmodelin muuttujan kautta
+        viewModel.createDayChart()
+        binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
+
+        //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
+        binding.currentHourPriceText.text = viewModel.currentHourPrice
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,7 +1,12 @@
 package com.example.easyenergy.fragments
 
+import android.R
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -29,9 +34,28 @@ class MainViewModel : ViewModel(){
     val currentHourPrice get() = _currentHourPrice
 
     private var _yearArray = mutableListOf<String>()
-    val yearArray get() = _yearArray
+    private var selectedYear = "2023"
 
 
+
+    //tällä hetkellä hakee getAllDatan kautta kaikki vuodet, _yearArrayhyn tallennettu getAllDatan data -> tulee vaihtaa sitten lopulliseen vuoden datan hakuun
+    fun createSpinner(spinner: Spinner, context: Context)
+    {
+        val spinnerAdapter= ArrayAdapter(context, R.layout.simple_spinner_item, _yearArray)
+        spinner.adapter = spinnerAdapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+
+                selectedYear = spinner.getSelectedItem().toString()
+                Log.d("Spinner", selectedYear)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
 
     fun createDayChart()
     {
@@ -133,13 +157,13 @@ class MainViewModel : ViewModel(){
 
                         //lisää vuosi arrayhyn vuoden jos sitä ei ole jo listassa, tällä tavalla välttyi duplikaateilta
                         //TODO: muokata vuoden lisäys oman tietokannan datan mukaan
-                        if (yearArray.contains(timeValSub))
+                        if (_yearArray.contains(timeValSub))
                         {
                             true
                         }
                         else
                         {
-                            yearArray.add(timeValSub!!)
+                            _yearArray.add(timeValSub!!)
                         }
 
                     }

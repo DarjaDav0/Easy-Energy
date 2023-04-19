@@ -44,33 +44,37 @@ class MainFragment : Fragment() {
         //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
         binding.currentHourPriceText.text = viewModel.currentHourPrice
 
-        //luo spinnerin viewin main fragmentin xml:ssä
-        val spinner = binding.spinnerDropdown
-        val spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, viewModel.yearArray)
-        spinner.adapter = spinnerAdapter
 
+        //daily
         binding.dayButton.setOnClickListener()
         {
             viewModel.createDayChart()
             binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
         }
 
-        binding.weekButton.setOnClickListener()
+        //monthly
+        binding.monthButton.setOnClickListener()
         {
             viewModel.createWeekChart()
             binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
         }
 
-        binding.monthButton.setOnClickListener()
+        //year
+        binding.yearButton.setOnClickListener()
         {
             viewModel.createMonthChart()
             binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
+            viewModel.createSpinner(binding.spinnerDropdown, this.requireContext())
+            binding.spinnerDropdown.visibility = View.VISIBLE
         }
 
+        //testaukseen, saa poistaa lopullisesta versiosta
         binding.buttonForTesting.setOnClickListener()
         {
             viewModel.getAllData(this.requireContext())
         }
+
+
 
 
         //recyclerView.adapter = adapter

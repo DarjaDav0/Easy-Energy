@@ -72,7 +72,9 @@ class MainFragment : Fragment() {
         binding.buttonForTesting.setOnClickListener()
         {
             //viewModel.getAllData(this.requireContext())
+
             viewModel.getDayData(this.requireContext())
+
             viewModel.createDayChart()
         }
 

@@ -19,13 +19,15 @@ import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainViewModel : ViewModel(){
     private var hoursList = mutableListOf<Double>()
     var allDataList = mutableListOf<ElectricityPrice>()
-    var dayDataList = mutableListOf<ElectricityPrice>()
+    var dayDataList = mutableListOf<Double>()
     private lateinit var testChart : AAChartModel
     val getChart get() = testChart
     var chosenYear: String = "2022"
@@ -60,12 +62,7 @@ class MainViewModel : ViewModel(){
 
     fun createDayChart()
     {
-        hoursList.clear()
-        //for loop on puhtaasti tehty testausta varten
-       for (i in 0 until 24)
-        {
-           hoursList.add(i.toDouble())
-        }
+
 
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
@@ -197,7 +194,9 @@ class MainViewModel : ViewModel(){
     fun getDayData(context: Context) {
         viewModelScope.launch {
             currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/${currentTime}T00:00:00Z"
+            //periaatteessa toimii kun vaihtaa 2023-03-21 kohdan currenttimeen
+            //mutta backendillä oli itsellään ongelmia hakea viime aikaista dataa byday
+            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/2023-03-21T00:00:00Z"
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             // Request a string response from the provided URL.
@@ -206,10 +205,16 @@ class MainViewModel : ViewModel(){
                 Response.Listener { response ->
                     var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
 
-
-
+                    val formatter = DecimalFormat("0.0")
+                    for (item in result)
+                    {
+                        val time = item.Time?.substring(12,13)
+                        val price = formatter.format(item.value)
+                        dayDataList.add(price.toDouble())
+                        hoursList.add(time!!.toDouble())
+                        Log.d("item", price.toString())
+                    }
                     // Store the list of ElectricityPrice objects in allDataList
-                    dayDataList = result.toMutableList()
 
                     Log.d("ADVTECH", dayDataList.toString())
 

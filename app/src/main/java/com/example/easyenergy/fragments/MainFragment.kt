@@ -71,7 +71,9 @@ class MainFragment : Fragment() {
         //testaukseen, saa poistaa lopullisesta versiosta
         binding.buttonForTesting.setOnClickListener()
         {
-            viewModel.getAllData(this.requireContext())
+            //viewModel.getAllData(this.requireContext())
+            viewModel.getDayData(this.requireContext())
+            viewModel.createDayChart()
         }
 
 

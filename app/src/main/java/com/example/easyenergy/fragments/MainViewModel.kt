@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -20,16 +19,18 @@ import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainViewModel : ViewModel(){
-    private val hoursList = mutableListOf<Double>()
+    private var hoursList = mutableListOf<Double>()
     var allDataList = mutableListOf<ElectricityPrice>()
     var dayDataList = mutableListOf<ElectricityPrice>()
     private lateinit var testChart : AAChartModel
     val getChart get() = testChart
     var chosenYear: String = "2022"
-    val currentTime = Date()
+    val timeFormat = ""
+    var currentTime = ""
     private var _currentHourPrice: String= "test price 123"
     val currentHourPrice get() = _currentHourPrice
 
@@ -77,7 +78,7 @@ class MainViewModel : ViewModel(){
                 AASeriesElement()
                     .color("#494949")
                     .name("c/kwh")
-                    .data(hoursList.toTypedArray())
+                    .data(dayDataList.toTypedArray())
             )
             )
     }
@@ -195,7 +196,8 @@ class MainViewModel : ViewModel(){
     //TODO: viewmodelin muuttuja _currentHourPrice muuttaa nykyisen tunnin hinnan mukaiseksi ja lisätä sen stringin perään c/kwh (ei atm erillistä tekstikentää sille kun voi laittaa tätäkin kautta)
     fun getDayData(context: Context) {
         viewModelScope.launch {
-            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/${currentTime}"
+            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/${currentTime}T00:00:00Z"
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             // Request a string response from the provided URL.
@@ -203,6 +205,8 @@ class MainViewModel : ViewModel(){
                 Request.Method.GET, JSON_URL,
                 Response.Listener { response ->
                     var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+
+
 
                     // Store the list of ElectricityPrice objects in allDataList
                     dayDataList = result.toMutableList()

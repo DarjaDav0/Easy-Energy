@@ -4,19 +4,19 @@
         <!-- Primary brand color. -->
 
         <item name="colorOnPrimary">@color/grey</item>
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryVariant">@color/grey</item>
+        <item name="colorPrimary">@color/dark_grey</item>
+        <item name="colorPrimaryVariant">@color/light_brown</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/amber</item>
-        <item name="colorSecondaryVariant">@color/amber</item>
-        <item name="colorOnSecondary">@color/amber</item>
+        <item name="colorSecondaryVariant">@color/light_amber</item>
+        <item name="colorOnSecondary">@color/dark_amber</item>
         <!-- Status bar color. -->
 
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor">@color/dark_grey</item>
         <item name="android:navigationBarColor">@color/dark_grey</item>
-        <item name="android:textColor">@color/amber</item>
+        <item name="android:textColor">@color/light_amber</item>
         <item name="android:background">@color/grey</item>
         <item name="android:windowLightStatusBar">false</item>
 
@@ -25,6 +25,7 @@
     <style name="ButtonEE">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/amber</item>
+        <item name="android:background">@drawable/darktheme_button_background</item>
     </style>
     <style name="Theme.EasyEnergy.NoActionBar">
         <item name="windowActionBar">false</item>

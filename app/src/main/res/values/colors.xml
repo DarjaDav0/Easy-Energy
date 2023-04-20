@@ -10,4 +10,8 @@
     <color name="no_color">#0000ffff</color>
     <color name="colorPrimary">#eeeeee</color>
     <color name="colorPrimaryDark">#eeeeee</color>
+    <color name="brown">#734705</color>
+    <color name="light_brown">#88642E</color>
+    <color name="dark_brown">#503001</color>
+    <color name="orange">#FF9800</color>
 </resources>

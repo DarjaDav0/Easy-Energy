@@ -7,9 +7,12 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.volley.AuthFailureError
+import com.android.volley.BuildConfig
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -18,13 +21,28 @@ import com.example.easyenergy.datatypes.ElectricityPrice
 import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.gson.GsonBuilder
+import com.influxdb.client.InfluxDBClient
+import com.influxdb.client.InfluxDBClientFactory
+import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
+import com.influxdb.query.FluxRecord
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainViewModel : ViewModel(){
+    private val url = "http://localhost:8086"
+    //token pitäisi saada local.properties tiedostoon ja sitten hakea sieltä
+    private val token = "wRvSgV9igGmzZnHpB-pJ-l-oZQ2LtRwSoZgeazPmWTKLaP5RJhEYVhGgoh5bYVbPl8H0HSrV41KWBj94rztSkw=="
+    private val org = "easyenergy"
+    private val bucket = "electricity_prices"
+    private val client: InfluxDBClient = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket)
+
     private var hoursList = mutableListOf<Double>()
     var allDataList = mutableListOf<ElectricityPrice>()
     var dayDataList = mutableListOf<Double>()
@@ -62,14 +80,19 @@ class MainViewModel : ViewModel(){
 
     fun createDayChart()
     {
-
-
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
-            .title("Hintaseuranta")
+            //.title("Hintaseuranta")
             .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
             .axesTextColor("#494949")
             .backgroundColor("#f9bf05")
+
+
+            .borderRadius(3)
+            .title("Päivä hinta")
+            .animationDuration(650)
+            .animationType(AAChartAnimationType.SwingTo)
+
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
@@ -91,10 +114,16 @@ class MainViewModel : ViewModel(){
 
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
-            .title("Hintaseuranta")
+            //.title("Hintaseuranta")
             .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
             .axesTextColor("#494949")
             .backgroundColor("#f9bf05")
+
+            .borderRadius(3)
+            .title("Kuukausi hinta")
+            .animationDuration(650)
+            .animationType(AAChartAnimationType.SwingTo)
+
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
@@ -117,10 +146,17 @@ class MainViewModel : ViewModel(){
 
         testChart = AAChartModel()
             .chartType(AAChartType.Column)
-            .title("Hintaseuranta")
+            //.title("Hintaseuranta")
             .titleStyle(AAStyle.Companion.style("#494949", 32, AAChartFontWeightType.Bold))
             .axesTextColor("#494949")
             .backgroundColor("#f9bf05")
+
+
+            .borderRadius(3)
+            .title("Vuosi hinta")
+            .animationDuration(650)
+            .animationType(AAChartAnimationType.SwingTo)
+
             .dataLabelsEnabled(true)
             .series(arrayOf(
                 AASeriesElement()
@@ -241,6 +277,24 @@ class MainViewModel : ViewModel(){
             val requestQueue = Volley.newRequestQueue(context)
             requestQueue.add(stringRequest)
         }
+    }
+
+    fun getDataFromInflux(context: Context){
+
+        val influxDBClient = InfluxDBClientKotlinFactory
+            .create("http://localhost:8086", "wRvSgV9igGmzZnHpB-pJ-l-oZQ2LtRwSoZgeazPmWTKLaP5RJhEYVhGgoh5bYVbPl8H0HSrV41KWBj94rztSkw==".toCharArray(), org, bucket)
+        // hard coded ajat toistaiseksi
+        val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
+                "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
+                "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
+
+
+        val results = influxDBClient.getQueryKotlinApi().queryRaw(fluxQuery, org)
+
+
+        Log.d("InfluxDB", results.toString())
+
+        influxDBClient.close()
     }
 
     fun getThisHourData(context: Context) {

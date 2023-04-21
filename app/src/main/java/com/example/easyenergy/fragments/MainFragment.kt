@@ -1,5 +1,6 @@
 package com.example.easyenergy.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,14 +19,16 @@ import com.android.volley.toolbox.Volley
 import com.example.easyenergy.ElectricityPriceAdapter
 import com.example.easyenergy.databinding.FragmentMainBinding
 import com.example.easyenergy.datatypes.ElectricityPrice
+import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
 
 class MainFragment : Fragment() {
-
+    private val bucket = "electricity_prices"
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
     //private val recyclerView = binding.dayPriceList
     //private val adapter = ElectricityPriceAdapter(viewModel.dayDataList)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +40,9 @@ class MainFragment : Fragment() {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel.getThisHourData(this.requireContext())
+
+        viewModel.getDayData(this.requireContext())
+
 
 
 
@@ -72,9 +78,9 @@ class MainFragment : Fragment() {
         binding.buttonForTesting.setOnClickListener()
         {
             //viewModel.getAllData(this.requireContext())
-
+            //viewModel.getDataFromInflux(this.requireContext())
+            getDataFromInflux()
             viewModel.getDayData(this.requireContext())
-
             viewModel.createDayChart()
         }
 
@@ -100,5 +106,24 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // testinappia varten täällä tämä funktio
+    fun getDataFromInflux(){
+
+        val influxDBClient = InfluxDBClientKotlinFactory
+            .create("http://localhost:8086", "wRvSgV9igGmzZnHpB-pJ-l-oZQ2LtRwSoZgeazPmWTKLaP5RJhEYVhGgoh5bYVbPl8H0HSrV41KWBj94rztSkw==".toCharArray(), "easyenergy", bucket)
+        // hard coded ajat toistaiseksi
+        val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
+                "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
+                "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
+
+
+        val results = influxDBClient.getQueryKotlinApi().queryRaw(fluxQuery, "easyenergy")
+        binding.textView5.text = results.toString()
+
+        Log.d("InfluxDB", results.toString())
+
+        influxDBClient.close()
     }
 }

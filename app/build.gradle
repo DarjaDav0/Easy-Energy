@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id "androidx.navigation.safeargs.kotlin"
-    id 'kotlin-kapt'
+
 }
 
 android {
@@ -64,5 +64,6 @@ dependencies {
 
     implementation "com.influxdb:influxdb-client-kotlin:6.7.0"
 
-    implementation "com.influxdb:influxdb-client-kotlin:2.0.0"
+    implementation "com.influxdb:influxdb-client-kotlin:6.7.0"
+
 }

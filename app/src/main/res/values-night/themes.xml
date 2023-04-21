@@ -19,14 +19,14 @@
         <item name="android:textColor">@color/light_amber</item>
         <item name="android:background">@color/darker_grey</item>
         <item name="android:windowLightStatusBar">false</item>
-
     </style>
 
-    <style name="ButtonEE">
+    <style name="DarkButtonEE">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/amber</item>
         <item name="android:background">@drawable/darktheme_button_background</item>
     </style>
+
     <style name="Theme.EasyEnergy.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

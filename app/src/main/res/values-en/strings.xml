@@ -9,8 +9,8 @@
     <string name="info_menu">Info</string>
     <string name="settings_menu">Settings</string>
     <string name="current_price_text">Current price</string>
-    <string name="info">Electricity\'s price changes noticeably every hour. With this app you can use electricity price efficiently.
-        Electricity\'s hour price data comes from Entso-E service. \n
+    <string name="info">    Electricity\'s price changes noticeably every hour. With this app you can use electricity price efficiently.
+            Electricity\'s hour price data comes from Entso-E service. \n
         Credits: \n
     Nico Suonvieri \n
     Irina Luiro \n

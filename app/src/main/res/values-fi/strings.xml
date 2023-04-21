@@ -9,9 +9,9 @@
     <string name="info_menu">Info</string>
     <string name="settings_menu">Asetukset</string>
     <string name="current_price_text">Nykyinen hinta</string>
-    <string name="info">Sähkön hinta vaihtelee jyrkästi tunneittain. Tämän sovelluksen avulla
-        pystyt hyödyntämään sähköä halvimpina tunteina.
-        Sähkön tuntihinnat tulevat Entso-e palvelulta. \n
+    <string name="info">    Sähkön hinta vaihtelee jyrkästi tunneittain. Tämän sovelluksen avulla
+            pystyt hyödyntämään sähköä halvimpina tunteina.
+            Sähkön tuntihinnat tulevat Entso-e palvelulta. \n
         Tekijät: \n
     Nico Suonvieri \n
     Irina Luiro \n

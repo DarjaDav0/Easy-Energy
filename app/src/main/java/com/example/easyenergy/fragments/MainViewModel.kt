@@ -104,7 +104,7 @@ class MainViewModel : ViewModel(){
             )
     }
 
-    fun createWeekChart()
+    fun createMonthChart()
     {
         hoursList.clear()
         //for loop on puhtaasti tehty testausta varten
@@ -135,7 +135,7 @@ class MainViewModel : ViewModel(){
             )
     }
 
-    fun createMonthChart()
+    fun createYearChart()
     {
         hoursList.clear()
 

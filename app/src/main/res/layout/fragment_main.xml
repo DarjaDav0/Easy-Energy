@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
             android:gravity="center"
-            android:textColor="#0B0B0B" />
+            android:textColor="#0B0B0B"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -84,7 +85,8 @@
         <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
             android:id="@+id/aa_chart_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
         </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 

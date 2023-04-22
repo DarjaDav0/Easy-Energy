@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.get
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
@@ -27,28 +29,39 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
 
+    //TODO: optimoi viewin luonti
+    // view lataa nopeammin kuin data eikä suostu refreshaamaan muuta kuin puhelinta flippaamalla
+    // testattu: viewgroupin removeAllViews ja refreshDrawableState(), asetettu layoutista näkyvyys GONE ja täällä VISIBLE, activityn käynnistystä uudelleen, fragment transactionia jne
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel.getThisHourData(this.requireContext())
-
         viewModel.getDayData(this.requireContext())
 
 
+        activity?.runOnUiThread()
+        {
+            //käyttää ensin viewmodelissa sijaitsevaa funktiota jonka jälkeen asettaa kuvaajaan viewmodelin muuttujan kautta
+            viewModel.createDayChart()
+            binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
 
+            //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
+            binding.currentHourPriceText.text = viewModel.currentHourPrice
 
-
-        createCharts()
-
-
+            binding.currentHourPriceText.visibility = View.VISIBLE
+            binding.aaChartView.visibility = View.VISIBLE
+        }
 
         //daily
         binding.dayButton.setOnClickListener()
@@ -60,17 +73,19 @@ class MainFragment : Fragment() {
         //monthly
         binding.monthButton.setOnClickListener()
         {
-            viewModel.createWeekChart()
+            viewModel.createMonthChart()
             binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
         }
 
         //year
         binding.yearButton.setOnClickListener()
         {
-            viewModel.createMonthChart()
+            viewModel.getAllData(this.requireContext())
+            viewModel.createYearChart()
             binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
             viewModel.createSpinner(binding.spinnerDropdown, this.requireContext())
             binding.spinnerDropdown.visibility = View.VISIBLE
+
         }
 
         //testaukseen, saa poistaa lopullisesta versiosta
@@ -79,8 +94,6 @@ class MainFragment : Fragment() {
             //viewModel.getAllData(this.requireContext())
             //viewModel.getDataFromInflux(this.requireContext())
             getDataFromInflux()
-            viewModel.getDayData(this.requireContext())
-            viewModel.createDayChart()
         }
 
 
@@ -89,19 +102,10 @@ class MainFragment : Fragment() {
         val recyclerView = binding.dayPriceList
         val adapter = ElectricityPriceAdapter(viewModel.dayClassList)
         recyclerView.adapter = adapter
+
         return binding.root
     }
 
-    fun createCharts()
-    {
-        //käyttää ensin viewmodelissa sijaitsevaa funktiota jonka jälkeen asettaa kuvaajaan viewmodelin muuttujan kautta
-        viewModel.createDayChart()
-        binding.aaChartView.aa_drawChartWithChartModel(viewModel.getChart)
-
-        //asettaa main fragmentin textviewin viewmodelin muuttujan mukaan
-        binding.currentHourPriceText.text = viewModel.currentHourPrice
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -26,8 +26,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
-    //private val recyclerView = binding.dayPriceList
-    //private val adapter = ElectricityPriceAdapter(viewModel.dayDataList)
+
 
 
     override fun onCreateView(
@@ -87,8 +86,9 @@ class MainFragment : Fragment() {
 
 
 
-
-        //recyclerView.adapter = adapter
+        val recyclerView = binding.dayPriceList
+        val adapter = ElectricityPriceAdapter(viewModel.dayClassList)
+        recyclerView.adapter = adapter
         return binding.root
     }
 

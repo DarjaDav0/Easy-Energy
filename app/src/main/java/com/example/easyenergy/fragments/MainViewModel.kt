@@ -46,6 +46,7 @@ class MainViewModel : ViewModel(){
     private var hoursList = mutableListOf<Double>()
     var allDataList = mutableListOf<ElectricityPrice>()
     var dayDataList = mutableListOf<Double>()
+    var dayClassList = mutableListOf<ElectricityPrice>()
     private lateinit var testChart : AAChartModel
     val getChart get() = testChart
     var chosenYear: String = "2022"
@@ -225,8 +226,6 @@ class MainViewModel : ViewModel(){
             requestQueue.add(stringRequest)
         }
     }
-
-    //TODO: viewmodelin muuttuja _currentHourPrice muuttaa nykyisen tunnin hinnan mukaiseksi ja lisätä sen stringin perään c/kwh (ei atm erillistä tekstikentää sille kun voi laittaa tätäkin kautta)
     fun getDayData(context: Context) {
         viewModelScope.launch {
             val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
@@ -242,15 +241,14 @@ class MainViewModel : ViewModel(){
                 Response.Listener { response ->
                     var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
 
-                    val formatter = DecimalFormat("0.0")
+
 
                     for (item in result)
                     {
                         val time = item.Time?.substring(12,13)
-                        val price = formatter.format(item.value).toDouble()
-                        dayDataList.add(price)
+                        dayDataList.add(item.value!!)
                         hoursList.add(time!!.toDouble())
-                        Log.d("item", price.toString())
+                        dayClassList.add(item)
                     }
                     // Store the list of ElectricityPrice objects in allDataList
 

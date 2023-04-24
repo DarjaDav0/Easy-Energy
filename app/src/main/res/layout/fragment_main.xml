@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:textAlignment="viewStart"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
-
 
 
     <LinearLayout
@@ -48,23 +47,26 @@
 
         <Button
             android:id="@+id/day_button"
-            style="@style/ButtonEE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:includeFontPadding="true"
+            android:paddingEnd="3dp"
             android:text="@string/today_btn" />
 
         <Button
             android:id="@+id/month_button"
-            style="@style/ButtonEE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:paddingEnd="3dp"
             android:text="@string/month_btn" />
 
         <Button
             android:id="@+id/year_button"
-            style="@style/ButtonEE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingEnd="3dp"
             android:text="@string/year_btn" />
     </LinearLayout>
 
@@ -96,9 +98,9 @@
     <Button
         android:id="@+id/button_for_testing"
         android:layout_width="match_parent"
-        android:textColor="@color/dark_grey"
         android:layout_height="wrap_content"
-        android:text="TEST" />
+        android:text="TEST"
+        android:textColor="@color/dark_grey" />
 
     <TextView
         android:id="@+id/textView5"
@@ -108,7 +110,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/day_price_list"
             android:layout_width="match_parent"

@@ -2,38 +2,39 @@ package com.example.easyenergy.fragments
 
 import android.R
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.volley.AuthFailureError
-import com.android.volley.BuildConfig
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.easyenergy.BuildConfig
 import com.example.easyenergy.datatypes.ElectricityPrice
 import com.github.aachartmodel.aainfographics.aachartcreator.*
 import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 import com.google.gson.GsonBuilder
 import com.influxdb.client.InfluxDBClient
 import com.influxdb.client.InfluxDBClientFactory
+import com.influxdb.client.domain.Authorization
+import com.influxdb.client.domain.Permission
+import com.influxdb.client.domain.PermissionResource
 import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
-import com.influxdb.query.FluxRecord
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.channels.consumeEach
+import kotlin.collections.ArrayList
+
 
 class MainViewModel : ViewModel(){
     private val url = "http://localhost:8086"
@@ -337,6 +338,41 @@ class MainViewModel : ViewModel(){
             // if using this in an activity, use "this" instead of "context"
             val requestQueue = Volley.newRequestQueue(context)
             requestQueue.add(stringRequest)
+        }
+    }
+
+    fun testDataFromInflux() {
+
+        //TODO: ongelmana on authorization, influxd serveri vaatii edelleen tokenia pyöriessään
+        runBlocking {
+            val token = "nv-jvEE-tt0Ofh7fm9kaTtyMoGHB_DaQRmj1D3POJwrNbYvNBK1BwX1B0trBMMEiUcsPp5Nh1XHx12qY0Ya8bQ==".toCharArray()
+            /*
+            val resource = PermissionResource()
+            resource.org("Easy Energy")
+            resource.type(PermissionResource.TYPE_BUCKETS)
+            val read = Permission()
+            read.resource(resource)
+            read.action(Permission.ActionEnum.READ)
+             */
+            val influxDBClient = InfluxDBClientKotlinFactory
+                .create(
+                    "http://10.0.2.2:8086?readTimeout=5000&connectTimeout=5000&logLevel=BASIC", token
+                )
+
+            // hard coded ajat toistaiseksi
+            val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
+                    "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
+                    "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
+
+
+            val list = mutableListOf<String>()
+            val result = influxDBClient.getQueryKotlinApi().query(fluxQuery, "Easy Energy")
+
+            Log.d("InfluxDB", result.toString())
+
+
+
+            influxDBClient.close()
         }
     }
 

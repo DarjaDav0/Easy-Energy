@@ -12,6 +12,7 @@ import com.example.easyenergy.databinding.FragmentMainBinding
 import com.influxdb.client.kotlin.InfluxDBClientKotlinFactory
 import android.os.Handler
 import android.os.Looper
+import kotlinx.coroutines.runBlocking
 
 class MainFragment : Fragment() {
     private val bucket = "electricity_prices"
@@ -70,6 +71,9 @@ class MainFragment : Fragment() {
             //viewModel.getAllData(this.requireContext())
             //viewModel.getDataFromInflux(this.requireContext())
             getDataFromInflux()
+
+            //testattu eri tapoja influxiin
+            //viewModel.testDataFromInflux()
         }
 
 
@@ -111,19 +115,26 @@ class MainFragment : Fragment() {
     // testinappia varten täällä tämä funktio
     fun getDataFromInflux(){
 
-        val influxDBClient = InfluxDBClientKotlinFactory
-            .create("http://localhost:8086", "wRvSgV9igGmzZnHpB-pJ-l-oZQ2LtRwSoZgeazPmWTKLaP5RJhEYVhGgoh5bYVbPl8H0HSrV41KWBj94rztSkw==".toCharArray(), "easyenergy", bucket)
-        // hard coded ajat toistaiseksi
-        val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
-                "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
-                "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
+        runBlocking {
+            val influxDBClient = InfluxDBClientKotlinFactory
+                .create(
+                    "http://localhost:8086",
+                    "wRvSgV9igGmzZnHpB-pJ-l-oZQ2LtRwSoZgeazPmWTKLaP5RJhEYVhGgoh5bYVbPl8H0HSrV41KWBj94rztSkw==".toCharArray(),
+                    "easyenergy",
+                    bucket
+                )
+            // hard coded ajat toistaiseksi
+            val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
+                    "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
+                    "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
 
 
-        val results = influxDBClient.getQueryKotlinApi().queryRaw(fluxQuery, "easyenergy")
-        binding.textView5.text = results.toString()
+            val results = influxDBClient.getQueryKotlinApi().queryRaw(fluxQuery, "easyenergy")
+            binding.textView5.text = results.toString()
 
-        Log.d("InfluxDB", results.toString())
+            Log.d("InfluxDB", results.toString())
 
-        influxDBClient.close()
+            influxDBClient.close()
+        }
     }
 }

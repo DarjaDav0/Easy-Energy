@@ -344,8 +344,10 @@ class MainViewModel : ViewModel(){
     fun testDataFromInflux() {
 
         //TODO: ongelmana on authorization, influxd serveri vaatii edelleen tokenia pyöriessään
+        //read only token omaan influxdb cloudiin, data on hieman huonossa muodossa vielä missä price on yhdessä pötkössä (esim. 2.92 2014-12-12T00:00:00Z)
+        // ja timestamppina toimii timenow (ei voi tallentaa energianhintojen aikoja timestampiksi sillä cloud tallentaa vain 30 päivän ajan dataa)
         runBlocking {
-            val token = "nv-jvEE-tt0Ofh7fm9kaTtyMoGHB_DaQRmj1D3POJwrNbYvNBK1BwX1B0trBMMEiUcsPp5Nh1XHx12qY0Ya8bQ==".toCharArray()
+            val token = "IKVYeQawX7_afsKYXDD6lBJmb85LSjCMdrLGAzdHdAwogI6VPYMN_CIinx7G39aAGkxRU6xKaSt19TZZtwWuWw==".toCharArray()
             /*
             val resource = PermissionResource()
             resource.org("Easy Energy")
@@ -356,17 +358,16 @@ class MainViewModel : ViewModel(){
              */
             val influxDBClient = InfluxDBClientKotlinFactory
                 .create(
-                    "http://10.0.2.2:8086?readTimeout=5000&connectTimeout=5000&logLevel=BASIC", token
+                    "https://us-east-1-1.aws.cloud2.influxdata.com", token
                 )
 
             // hard coded ajat toistaiseksi
-            val fluxQuery = ("from(bucket: \"electricity_prices\")\n" +
-                    "  |> range(start: 2023-04-20T04:00:00Z, stop: 2023-04-21T04:00:00Z)\n" +
-                    "  |> filter(fn: (r) => r[\"_measurement\"] == \"my_measurement\")")
+            val fluxQuery = ("from(bucket: \"energy_prices\")\n" +
+                    "  |> range(-10)")
 
 
             val list = mutableListOf<String>()
-            val result = influxDBClient.getQueryKotlinApi().query(fluxQuery, "Easy Energy")
+            val result = influxDBClient.getQueryKotlinApi().query(fluxQuery, "easyenergy")
 
             Log.d("InfluxDB", result.toString())
 

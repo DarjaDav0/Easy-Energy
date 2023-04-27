@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:textAlignment="viewStart"
+    android:background="@drawable/ee3onlylogo"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
+
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:background="@drawable/ee3logo"-->
+<!--        android:src="@drawable/ee3logo" />-->
+
 
 
     <LinearLayout
@@ -49,8 +58,10 @@
             android:id="@+id/day_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:includeFontPadding="true"
+            android:layout_gravity="center"
+            android:padding="5sp"
+            android:width="75sp"
+            android:gravity="center"
             android:paddingEnd="3dp"
             android:text="@string/today_btn" />
 
@@ -58,7 +69,11 @@
             android:id="@+id/month_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
+            android:layout_gravity="center"
+            android:padding="5sp"
+            android:width="75sp"
+            android:layout_marginHorizontal="15sp"
+            android:gravity="center"
             android:paddingEnd="3dp"
             android:text="@string/month_btn" />
 
@@ -66,6 +81,10 @@
             android:id="@+id/year_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5sp"
+            android:width="75sp"
+            android:gravity="center"
             android:paddingEnd="3dp"
             android:text="@string/year_btn" />
     </LinearLayout>
@@ -99,10 +118,12 @@
         android:id="@+id/button_for_testing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:text="TEST"
         android:textColor="@color/dark_grey" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,6 +136,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/day_price_list"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
     </androidx.cardview.widget.CardView>
 

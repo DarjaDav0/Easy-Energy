@@ -70,10 +70,10 @@ class MainFragment : Fragment() {
         {
             //viewModel.getAllData(this.requireContext())
             //viewModel.getDataFromInflux(this.requireContext())
-            getDataFromInflux()
-
+            viewModel.getTodayAverage(this.requireContext())
             //testattu eri tapoja influxiin
             //viewModel.testDataFromInflux()
+            viewModel.getLatestHourData(this.requireContext())
         }
 
 

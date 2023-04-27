@@ -12,16 +12,16 @@
         android:layout_width="212dp"
         android:layout_height="170dp"
         android:layout_marginStart="100dp"
-        android:src="@drawable/green_bolt" />
+        android:src="@drawable/ee3logo" />
 
     <TextView
         android:id="@+id/infoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="45sp"
+        android:layout_marginHorizontal="10sp"
+        android:padding="5sp"
+        android:gravity="center"
         android:text="@string/info"
         android:textSize="18sp"
         android:background="@drawable/info_text_view_border"

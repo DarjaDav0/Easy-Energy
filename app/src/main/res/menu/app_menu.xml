@@ -7,16 +7,16 @@
     <item
         android:id="@+id/mainFragment"
         android:orderInCategory="1"
-        android:title="@string/home_menu"
+        android:title="EasyEnergy"
         app:showAsAction="never" />
     <item
         android:id="@+id/infoFragment"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/info_menu"
         app:showAsAction="never" />
     <item
         android:id="@+id/settingsFragment"
-        android:orderInCategory="3"
-        android:title="@string/settings_menu"
+        android:orderInCategory="2"
+        android:title="Logo"
         app:showAsAction="never" />
 </menu>

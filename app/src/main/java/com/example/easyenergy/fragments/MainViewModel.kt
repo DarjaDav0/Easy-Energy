@@ -66,23 +66,23 @@ class MainViewModel : ViewModel(){
 
 
     //tällä hetkellä hakee getAllDatan kautta kaikki vuodet, _yearArrayhyn tallennettu getAllDatan data -> tulee vaihtaa sitten lopulliseen vuoden datan hakuun
-    fun createSpinner(spinner: Spinner, context: Context)
-    {
-        val spinnerAdapter= ArrayAdapter(context, R.layout.simple_spinner_item, _yearArray)
-        spinner.adapter = spinnerAdapter
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-
-                selectedYear = spinner.getSelectedItem().toString()
-                Log.d("Spinner", selectedYear)
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
-    }
+//    fun createSpinner(spinner: Spinner, context: Context)
+//    {
+//        val spinnerAdapter= ArrayAdapter(context, R.layout.simple_spinner_item, _yearArray)
+//        spinner.adapter = spinnerAdapter
+//
+//        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+//
+//                selectedYear = spinner.getSelectedItem().toString()
+//                Log.d("Spinner", selectedYear)
+//            }
+//
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                TODO("Not yet implemented")
+//            }
+//        }
+//    }
 
     fun createDayChart()
     {
@@ -220,7 +220,7 @@ class MainViewModel : ViewModel(){
                         }
 
                     }
-                    Log.d("ADVTECH", allDataList.size.toString())
+                    Log.d("getAllData()", allDataList.size.toString())
 
                 },
                 Response.ErrorListener {
@@ -244,56 +244,56 @@ class MainViewModel : ViewModel(){
             requestQueue.add(stringRequest)
         }
     }
-    fun getDayData(context: Context) {
-        viewModelScope.launch {
-            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
-            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            //periaatteessa toimii kun vaihtaa 2023-03-21 kohdan currenttimeen
-            //mutta backendillä oli itsellään ongelmia hakea viime aikaista dataa byday
-            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices"
-
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            // Request a string response from the provided URL.
-            val stringRequest: StringRequest = object : StringRequest(
-                Request.Method.GET, JSON_URL,
-                Response.Listener { response ->
-                    var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
-
-
-
-                    for (item in result)
-                    {
-                        val time = item.Time?.substring(12,13)
-                        dayDataList.add(item.value!!)
-                        hoursList.add(time!!.toDouble())
-                        dayClassList.add(item)
-                    }
-                    // Store the list of ElectricityPrice objects in allDataList
-
-                    Log.d("ADVTECH", dayDataList.toString())
-
-                },
-                Response.ErrorListener {
-                    // typically this is a connection error
-                    Log.d("ADVTECH", it.toString())
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): Map<String, String> {
-
-                    // basic headers for the data
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    headers["Content-Type"] = "application/json; charset=utf-8"
-                    return headers
-                }
-            }
-
-            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
-            // if using this in an activity, use "this" instead of "context"
-            val requestQueue = Volley.newRequestQueue(context)
-            requestQueue.add(stringRequest)
-        }
-    }
+//    fun getDayData(context: Context) {
+//        viewModelScope.launch {
+//            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
+//            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+//            //periaatteessa toimii kun vaihtaa 2023-03-21 kohdan currenttimeen
+//            //mutta backendillä oli itsellään ongelmia hakea viime aikaista dataa byday
+//            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices"
+//
+//            val gson = GsonBuilder().setPrettyPrinting().create()
+//            // Request a string response from the provided URL.
+//            val stringRequest: StringRequest = object : StringRequest(
+//                Request.Method.GET, JSON_URL,
+//                Response.Listener { response ->
+//                    var result : List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+//
+//
+//
+//                    for (item in result)
+//                    {
+//                        val time = item.Time?.substring(12,13)
+//                        dayDataList.add(item.value!!)
+//                        hoursList.add(time!!.toDouble())
+//                        dayClassList.add(item)
+//                    }
+//                    // Store the list of ElectricityPrice objects in allDataList
+//
+//                    Log.d("getDayData()", dayDataList.toString())
+//
+//                },
+//                Response.ErrorListener {
+//                    // typically this is a connection error
+//                    Log.d("ADVTECH", it.toString())
+//                }) {
+//                @Throws(AuthFailureError::class)
+//                override fun getHeaders(): Map<String, String> {
+//
+//                    // basic headers for the data
+//                    val headers = HashMap<String, String>()
+//                    headers["Accept"] = "application/json"
+//                    headers["Content-Type"] = "application/json; charset=utf-8"
+//                    return headers
+//                }
+//            }
+//
+//            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
+//            // if using this in an activity, use "this" instead of "context"
+//            val requestQueue = Volley.newRequestQueue(context)
+//            requestQueue.add(stringRequest)
+//        }
+//    }
 
     fun getMonthData(context: Context) {
         viewModelScope.launch {
@@ -339,7 +339,7 @@ class MainViewModel : ViewModel(){
                 },
                 Response.ErrorListener {
                     // typically this is a connection error
-                    Log.d("ADVTECH", it.toString())
+                    Log.d("getMonthData()", it.toString())
                 }) {
                 @Throws(AuthFailureError::class)
                 override fun getHeaders(): Map<String, String> {
@@ -357,56 +357,56 @@ class MainViewModel : ViewModel(){
         }
     }
 
-    fun getLatestHourData(context: Context) {
-        viewModelScope.launch {
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/$currentDate" + "T00:00:00Z"
-
-            val stringRequest: StringRequest = object : StringRequest(
-                Request.Method.GET, JSON_URL,
-                Response.Listener { response ->
-                    val result: List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
-
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date()
-
-                    // Calculate the latest full hour
-                    val latestFullHour = calendar.get(Calendar.HOUR_OF_DAY) - 1
-                    val filteredList = result.filter { it.Time?.substring(11, 13)?.toInt() == latestFullHour }
-
-                    val hourDataList = mutableListOf<Double>()
-
-                    for (item in filteredList) {
-                        hourDataList.add(item.value!!)
-                        _currentHourPrice = "${item.value!!} c/kwh"
-                    }
-
-                    if (hourDataList.isEmpty()) {
-                        Log.d("ADVTECH", "No data for the latest full hour.")
-                    } else {
-                        Log.d("ADVTECH", "Values for the latest full hour:")
-                        for (item in hourDataList) {
-                            Log.d("ADVTECH", "$item c/kwh")
-                        }
-                    }
-                },
-                Response.ErrorListener {
-                    Log.d("ADVTECH", it.toString())
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): Map<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    headers["Content-Type"] = "application/json; charset=utf-8"
-                    return headers
-                }
-            }
-
-            val requestQueue = Volley.newRequestQueue(context)
-            requestQueue.add(stringRequest)
-        }
-    }
+//    fun getLatestHourData(context: Context) {
+//        viewModelScope.launch {
+//            val gson = GsonBuilder().setPrettyPrinting().create()
+//            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+//            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/$currentDate" + "T00:00:00Z"
+//
+//            val stringRequest: StringRequest = object : StringRequest(
+//                Request.Method.GET, JSON_URL,
+//                Response.Listener { response ->
+//                    val result: List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+//
+//                    val calendar = Calendar.getInstance()
+//                    calendar.time = Date()
+//
+//                    // Calculate the latest full hour
+//                    val latestFullHour = calendar.get(Calendar.HOUR_OF_DAY)
+//                    val filteredList = result.filter { it.Time?.substring(11, 13)?.toInt() == latestFullHour }
+//
+//                    val hourDataList = mutableListOf<Double>()
+//
+//                    for (item in filteredList) {
+//                        hourDataList.add(item.value!!)
+//                        _currentHourPrice = "${item.value!!} c/kwh"
+//                    }
+//
+//                    if (hourDataList.isEmpty()) {
+//                        Log.d("getLatestHourData()", "No data for the latest full hour.")
+//                    } else {
+//                        Log.d("getLatestHourData()", "Values for the latest full hour:")
+//                        for (item in hourDataList) {
+//                            Log.d("getLatestHourData()", "$item c/kwh")
+//                        }
+//                    }
+//                },
+//                Response.ErrorListener {
+//                    Log.d("ADVTECH", it.toString())
+//                }) {
+//                @Throws(AuthFailureError::class)
+//                override fun getHeaders(): Map<String, String> {
+//                    val headers = HashMap<String, String>()
+//                    headers["Accept"] = "application/json"
+//                    headers["Content-Type"] = "application/json; charset=utf-8"
+//                    return headers
+//                }
+//            }
+//
+//            val requestQueue = Volley.newRequestQueue(context)
+//            requestQueue.add(stringRequest)
+//        }
+//    }
 
 
     fun getTodayAverage(context: Context) {
@@ -429,7 +429,7 @@ class MainViewModel : ViewModel(){
                     }
 
                     val average = dayDataList.average()
-                    Log.d("ADVTECH", "Päivän keskiarvo: $average")
+                    Log.d("getTodayAverage()", "Päivän keskiarvo: $average")
                 },
                 Response.ErrorListener {
                     Log.d("ADVTECH", it.toString())
@@ -469,7 +469,7 @@ class MainViewModel : ViewModel(){
 
                 val average = if (count > 0) sum / count else 0.0
 
-                Log.d("ADVTECH", "Average for $currentDay: $average")
+                Log.d("getNowAverage()", "Average for $currentDay: $average")
             },
             Response.ErrorListener {
                 Log.d("ADVTECH", it.toString())
@@ -508,50 +508,50 @@ class MainViewModel : ViewModel(){
 //    }
 
     //deprekoitu functio ↓
-    fun getThisHourData(context: Context) {
-        viewModelScope.launch {
-            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
-
-            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/2023-03-21T${currentHour}:00:00Z"
-
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            // Request a string response from the provided URL.
-            val stringRequest: StringRequest = object : StringRequest(
-                Request.Method.GET, JSON_URL,
-                Response.Listener { response ->
-                    var result: List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
-
-                    val formatter = DecimalFormat("0.0")
-                    val thisHourItem = result[currentHour]
-                    val formatted = formatter.format(thisHourItem.value)
-                    _currentHourPrice = "$formatted c/kwh"
-                    Log.d("ThisHour", thisHourItem.value.toString())
-
-
-
-                },
-                Response.ErrorListener {
-                    // typically this is a connection error
-                    Log.d("ADVTECH", it.toString())
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): Map<String, String> {
-
-                    // basic headers for the data
-                    val headers = HashMap<String, String>()
-                    headers["Accept"] = "application/json"
-                    headers["Content-Type"] = "application/json; charset=utf-8"
-                    return headers
-                }
-            }
-
-            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
-            // if using this in an activity, use "this" instead of "context"
-            val requestQueue = Volley.newRequestQueue(context)
-            requestQueue.add(stringRequest)
-        }
-    }
+//    fun getThisHourData(context: Context) {
+//        viewModelScope.launch {
+//            currentTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+//            val currentHour = SimpleDateFormat("HH", Locale.getDefault()).format(Date()).toInt()
+//
+//            val JSON_URL = "http://spotprices.energyecs.frostbit.fi/api/v1/prices/byday/2023-03-21T${currentHour}:00:00Z"
+//
+//            val gson = GsonBuilder().setPrettyPrinting().create()
+//            // Request a string response from the provided URL.
+//            val stringRequest: StringRequest = object : StringRequest(
+//                Request.Method.GET, JSON_URL,
+//                Response.Listener { response ->
+//                    var result: List<ElectricityPrice> = gson.fromJson(response, Array<ElectricityPrice>::class.java).toList()
+//
+//                    val formatter = DecimalFormat("0.0")
+//                    val thisHourItem = result[currentHour]
+//                    val formatted = formatter.format(thisHourItem.value)
+//                    _currentHourPrice = "$formatted c/kwh"
+//                    Log.d("ThisHour", thisHourItem.value.toString())
+//
+//
+//
+//                },
+//                Response.ErrorListener {
+//                    // typically this is a connection error
+//                    Log.d("ADVTECH", it.toString())
+//                }) {
+//                @Throws(AuthFailureError::class)
+//                override fun getHeaders(): Map<String, String> {
+//
+//                    // basic headers for the data
+//                    val headers = HashMap<String, String>()
+//                    headers["Accept"] = "application/json"
+//                    headers["Content-Type"] = "application/json; charset=utf-8"
+//                    return headers
+//                }
+//            }
+//
+//            // Add the request to the RequestQueue. This has to be done in both getting and sending new data.
+//            // if using this in an activity, use "this" instead of "context"
+//            val requestQueue = Volley.newRequestQueue(context)
+//            requestQueue.add(stringRequest)
+//        }
+//    }
 
     //deprekoitu functio ↓
 //    fun testDataFromInflux() {
